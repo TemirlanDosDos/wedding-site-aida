@@ -45,7 +45,7 @@ export default function App() {
     let animationFrameId: number;
 
     let lastTime = 0;
-    const speed = 1; // 🔥 скорость (0.2–0.5 идеально)
+    const speed = 0.5; // 🔥 скорость (0.2–0.5 идеально)
 
     const scroll = (time: number) => {
       if (!lastTime) lastTime = time;

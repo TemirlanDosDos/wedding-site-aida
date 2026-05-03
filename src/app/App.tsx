@@ -70,10 +70,9 @@ export default function App() {
       */}
       <audio
         ref={audioRef}
-        src="https://drive.google.com/file/d/1AspCtjXRPGDE5D65qdiG4Vnd7l1qCimk/view?usp=sharing"
+        src="/music.mp3"
         loop
         preload="auto"
-        onError={(e) => console.log("Audio failed to load")}
       />
 
       {hasEntered && (

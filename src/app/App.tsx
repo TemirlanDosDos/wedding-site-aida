@@ -70,10 +70,11 @@ export default function App() {
       */}
       <audio
         ref={audioRef}
-        src="/music.mp3"
         loop
         preload="auto"
-      />
+      >
+        <source src="/music.mp3" type="audio/mpeg" />
+      </audio>
 
       {hasEntered && (
         <MusicPlayer

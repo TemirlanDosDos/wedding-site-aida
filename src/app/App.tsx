@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { HeroSection } from "./components/HeroSection";
 import { InvitationSection } from "./components/InvitationSection";
 import { TimerSection } from "./components/TimerSection";
@@ -14,73 +14,57 @@ export default function App() {
 
   const handleEnter = () => {
     setHasEntered(true);
+
     if (audioRef.current) {
-      try {
-        audioRef.current.volume = 0.5; // 50% volume so it's not too loud
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => setIsPlaying(true))
-            .catch((err) => {
-              console.log(
-                "Autoplay prevented or audio source invalid:",
-                err,
-              );
-              setIsPlaying(false);
-            });
-        }
-      } catch (err) {
-        console.log("Audio play error:", err);
-        setIsPlaying(false);
-      }
+      audioRef.current.volume = 0.5;
+
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => {
+          console.log("Autoplay blocked:", err);
+          setIsPlaying(false);
+        });
     }
   };
 
   const toggleMusic = () => {
-    if (audioRef.current) {
-      try {
-        if (isPlaying) {
-          audioRef.current.pause();
-          setIsPlaying(false);
-        } else {
-          const playPromise = audioRef.current.play();
-          if (playPromise !== undefined) {
-            playPromise
-              .then(() => setIsPlaying(true))
-              .catch((err) => {
-                console.log("Play prevented:", err);
-                setIsPlaying(false);
-              });
-          }
-        }
-      } catch (err) {
-        console.log("Audio toggle error:", err);
-      }
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
     }
   };
+
+  // 🔥 АВТОСКРОЛЛ
+  useEffect(() => {
+    if (hasEntered) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: "smooth",
+        });
+      }, 1500);
+    }
+  }, [hasEntered]);
 
   return (
     <div className="font-sans antialiased text-[#2f5f73] bg-[#f9f7f6] relative min-h-screen">
       {!hasEntered && <IntroOverlay onEnter={handleEnter} />}
 
-      {/* 
-        Музыка с Google Drive.
-        ID файла: 1AspCtjXRPGDE5D65qdiG4Vnd7l1qCimk
-        Если музыка не играет - убедитесь что доступ "Все, у кого есть ссылка"
-      */}
-      <audio
-        ref={audioRef}
-        loop
-        preload="auto"
-      >
+      {/* 🎵 Музыка */}
+      <audio ref={audioRef} loop preload="auto">
         <source src="/music.mp3" type="audio/mpeg" />
       </audio>
 
       {hasEntered && (
-        <MusicPlayer
-          isPlaying={isPlaying}
-          onToggle={toggleMusic}
-        />
+        <MusicPlayer isPlaying={isPlaying} onToggle={toggleMusic} />
       )}
 
       <div

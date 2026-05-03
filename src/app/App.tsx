@@ -17,14 +17,10 @@ export default function App() {
 
     if (audioRef.current) {
       audioRef.current.volume = 0.5;
-
       audioRef.current
         .play()
         .then(() => setIsPlaying(true))
-        .catch((err) => {
-          console.log("Autoplay blocked:", err);
-          setIsPlaying(false);
-        });
+        .catch(() => setIsPlaying(false));
     }
   };
 
@@ -42,16 +38,36 @@ export default function App() {
     }
   };
 
-  // 🔥 АВТОСКРОЛЛ
+  // 🔥 МЕДЛЕННЫЙ АВТОСКРОЛЛ
   useEffect(() => {
-    if (hasEntered) {
-      setTimeout(() => {
-        window.scrollTo({
-          top: window.innerHeight,
-          behavior: "smooth",
+    if (!hasEntered) return;
+
+    let scrollInterval: any;
+
+    const startScroll = () => {
+      scrollInterval = setInterval(() => {
+        window.scrollBy({
+          top: 0.5, // 🔥 скорость (можешь менять)
+          behavior: "auto",
         });
-      }, 1500);
-    }
+
+        // остановка внизу страницы
+        if (
+          window.innerHeight + window.scrollY >=
+          document.body.offsetHeight
+        ) {
+          clearInterval(scrollInterval);
+        }
+      }, 16); // ~60fps
+    };
+
+    // небольшая пауза перед началом
+    const timeout = setTimeout(startScroll, 1000);
+
+    return () => {
+      clearInterval(scrollInterval);
+      clearTimeout(timeout);
+    };
   }, [hasEntered]);
 
   return (

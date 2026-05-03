@@ -27,7 +27,7 @@ export function RsvpSection() {
 
     // 2. Напишите боту любое сообщение, затем перейдите в @userinfobot (или подобный),
     // чтобы узнать свой CHAT_ID (это цифры, например: 123456789)
-    const CHAT_ID = "1655263844";
+    const CHAT_ID = "562876469";
 
     const textMessage = `
 💌 <b>Жаңа жауап (Қыз Ұзату - Аида):</b>

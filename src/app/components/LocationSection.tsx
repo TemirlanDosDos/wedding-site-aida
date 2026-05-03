@@ -42,7 +42,7 @@ export function LocationSection() {
           </div>
 
           <a 
-            href="https://maps.google.com/?q=Уральск Самал 54а" 
+            href="https://go.2gis.com/Qtlel"
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-8 py-4 bg-[#2f5f73] text-white rounded-full font-['Montserrat'] text-sm uppercase tracking-widest hover:bg-[#1e4151] transition-colors shadow-lg shadow-[#2f5f73]/30"

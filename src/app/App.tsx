@@ -38,34 +38,40 @@ export default function App() {
     }
   };
 
-  // 🔥 МЕДЛЕННЫЙ АВТОСКРОЛЛ
+  // 🔥 ПЛАВНЫЙ АВТОСКРОЛЛ (РЕАЛЬНО РАБОТАЕТ)
   useEffect(() => {
     if (!hasEntered) return;
 
-    let scrollInterval: any;
+    let animationFrameId: number;
 
-    const startScroll = () => {
-      scrollInterval = setInterval(() => {
-        window.scrollBy({
-          top: 0.5, // 🔥 скорость (можешь менять)
-          behavior: "auto",
-        });
+    let lastTime = 0;
+    const speed = 0.3; // 🔥 скорость (0.2–0.5 идеально)
 
-        // остановка внизу страницы
-        if (
-          window.innerHeight + window.scrollY >=
-          document.body.offsetHeight
-        ) {
-          clearInterval(scrollInterval);
-        }
-      }, 16); // ~60fps
+    const scroll = (time: number) => {
+      if (!lastTime) lastTime = time;
+
+      const delta = time - lastTime;
+
+      if (delta > 16) {
+        window.scrollBy(0, speed * delta);
+        lastTime = time;
+      }
+
+      // стоп внизу
+      if (
+        window.innerHeight + window.scrollY <
+        document.body.scrollHeight
+      ) {
+        animationFrameId = requestAnimationFrame(scroll);
+      }
     };
 
-    // небольшая пауза перед началом
-    const timeout = setTimeout(startScroll, 1000);
+    const timeout = setTimeout(() => {
+      animationFrameId = requestAnimationFrame(scroll);
+    }, 1000);
 
     return () => {
-      clearInterval(scrollInterval);
+      cancelAnimationFrame(animationFrameId);
       clearTimeout(timeout);
     };
   }, [hasEntered]);

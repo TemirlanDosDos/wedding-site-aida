@@ -51,10 +51,8 @@ export function HeroSection() {
           
           <div className="mt-10 px-6 py-3 border border-[#d4b9b9]/50 rounded-full inline-block bg-white/50">
             <p className="text-[#88a3af] font-['Montserrat'] text-xs tracking-[0.2em] uppercase font-medium">
-              28 Тамыз 2026
-            </p>
-            <p className="text-[#88a3af] font-['Montserrat'] text-xs tracking-[0.2em] uppercase font-medium">
-              Уақыты: 19:00
+              28 Тамыз 2026<br>
+              Уақыты: 19:00</br>
             </p>
           </div>
         </motion.div>
